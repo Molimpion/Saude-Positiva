@@ -1,0 +1,13 @@
+{
+  "name": "Saúde Positiva (Nest.js + Postgres)",
+  "dockerComposeFile": "docker-compose.yml",
+  
+  // O serviço 'app' é onde o VS Code vai rodar
+  "service": "app",
+
+  // A pasta do projeto dentro do container
+  "workspaceFolder": "/workspace",
+
+  // Ao fechar o Codespace, desliga o compose
+  "shutdownAction": "stopCompose"
+}
