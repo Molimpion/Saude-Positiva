@@ -14,6 +14,7 @@ import { UpdatePacienteHandler } from './commands/update-paciente.handler';
 
 // QUERIES (Leitura)
 import { GetPacienteHandler } from './queries/get-paciente.handler';
+import { PacientesService } from './pacientes.service';
 // (Faltando o GetPacientesListHandler)
 
 // 1. Array de todos os Handlers de COMANDO
@@ -36,9 +37,10 @@ export const QueryHandlers = [GetPacienteHandler];
     // 5. Registra todos os Handlers como Providers do módulo
     ...CommandHandlers,
     ...QueryHandlers,
+    PacientesService,
   ],
   // 6. Exporta módulos ou provedores se outras features (ex: Prontuario) precisarem usar Paciente
   // Por exemplo: se ProntuarioModule precisasse injetar o repositório Paciente, faríamos um 'exports'.
-  exports: [TypeOrmModule, CqrsModule],
+  exports: [TypeOrmModule, CqrsModule, PacientesService],
 })
 export class PacientesModule {}

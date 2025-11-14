@@ -31,9 +31,7 @@ export class UpdatePacienteHandler
     }
 
     // 2. Lógica de Negócio: Atualização da Data de Nascimento (se presente)
-    const dataAtualizada = data.DataNascimento
-      ? { ...data, DataNascimento: new Date(data.DataNascimento) }
-      : data;
+    const dataAtualizada = data;
 
     // 3. Lógica de Banco: O .merge combina a entidade existente com os novos dados
     this.pacienteRepository.merge(paciente, dataAtualizada);

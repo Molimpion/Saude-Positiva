@@ -10,6 +10,16 @@ import { ConsultasModule } from './consultas/consultas.module';
 import { DiagnosticosModule } from './diagnosticos/diagnosticos.module';
 import { TestesAplicadosModule } from './testes-aplicados/testes-aplicados.module';
 import { DocumentosModule } from './documentos/documentos.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { Paciente } from './pacientes/paciente.entity';
+import { Medico } from './medicos/medico.entity';
+import { Prontuario } from './prontuarios/prontuario.entity';
+import { Consulta } from './consultas/consulta.entity';
+import { Diagnostico } from './diagnosticos/diagnostico.entity';
+import { TesteAplicado } from './testes-aplicados/teste-aplicado.entity';
+import { Documento } from './documentos/documento.entity';
+import { User } from './users/user.entity';
 
 @Module({
   imports: [
@@ -27,7 +37,16 @@ import { DocumentosModule } from './documentos/documentos.module';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
-        entities: [],
+        entities: [
+          Paciente,
+          Medico,
+          Prontuario,
+          Consulta,
+          Diagnostico,
+          TesteAplicado,
+          Documento,
+          User,
+        ],
         synchronize: true,
       }),
     }),
@@ -40,6 +59,8 @@ import { DocumentosModule } from './documentos/documentos.module';
     DiagnosticosModule,
     TestesAplicadosModule,
     DocumentosModule,
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

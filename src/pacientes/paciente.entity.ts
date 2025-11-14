@@ -1,10 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { Prontuario } from '../prontuarios/prontuario.entity';
+import { User } from '../users/user.entity';
 
 @Entity()
 export class Paciente {
   @PrimaryGeneratedColumn()
   PacienteID: number;
+
+  @OneToOne(() => User, { cascade: true })
+  @JoinColumn()
+  user: User;
 
   @Column()
   NomeCompleto: string;
@@ -18,7 +23,7 @@ export class Paciente {
   @Column({ nullable: true })
   Telefone: string;
 
-  @Column({ nullable: true })
+  @Column({ unique: true })
   Email: string;
 
   @Column({ nullable: true })
