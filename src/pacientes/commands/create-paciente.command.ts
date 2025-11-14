@@ -1,8 +1,10 @@
 // src/pacientes/commands/create-paciente.command.ts
-import { CreatePacienteDto } from '../dto/create-paciente.dto';
+import { CreatePacienteDto } from '../schemas/paciente.schema'; // <-- MUDANÇA DE CAMINHO (para Zod)
+import { User } from '../../users/user.entity'; // <-- ADICIONE
 
-// O Command recebe todos os dados do DTO
 export class CreatePacienteCommand {
-  // O 'constructor' força a atribuição de todos os campos
-  constructor(public readonly data: CreatePacienteDto) {}
+  constructor(
+    public readonly data: CreatePacienteDto,
+    public readonly user?: User, // <-- ADICIONE e torne opcional
+  ) {}
 }

@@ -1,17 +1,19 @@
-
+// src/auth/auth.service.ts
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { PacientesService } from '../pacientes/pacientes.service';
-import { CreatePacienteDto } from '../pacientes/dto/create-paciente.dto';
+import { CommandBus } from '@nestjs/cqrs';
+import { CreatePacienteCommand } from '../pacientes/commands/create-paciente.command';
+import { Paciente } from '../pacientes/paciente.entity';
+import { CreatePacienteDto } from '../pacientes/schemas/paciente.schema'; // 1. Importando do Schema Zod
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
-    private readonly pacientesService: PacientesService,
+    private readonly commandBus: CommandBus, // 2. Injetando o CommandBus
   ) {}
 
   async validateUser(email: string, pass: string): Promise<any> {
@@ -24,7 +26,8 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
+  // 3. CORRIGIDO: Removido 'async' pois não há 'await'
+  login(user: any) {
     const payload = { email: user.email, sub: user.id };
     return {
       access_token: this.jwtService.sign(payload),
@@ -40,10 +43,12 @@ export class AuthService {
       password_hash: hashedPassword,
     });
 
-    const paciente = await this.pacientesService.create(
-      createPacienteDto,
-      user,
-    );
+    // 4. Refatorado para usar CQRS
+    const command = new CreatePacienteCommand(createPacienteDto, user);
+    const paciente = await this.commandBus.execute<
+      CreatePacienteCommand,
+      Paciente
+    >(command);
 
     return { user, paciente };
   }
