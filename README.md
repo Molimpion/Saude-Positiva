@@ -2,97 +2,88 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<h1 align="center">Saúde Positiva - API</h1>
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+<p align="center">
+  API desenvolvida com NestJS para o sistema de prontuários eletrônicos Saúde Positiva.
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+## Descrição
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Esta é a API backend para o projeto Saúde Positiva, construída com [NestJS](https://github.com/nestjs/nest), um framework Node.js progressivo para a construção de aplicações server-side eficientes e escaláveis. A API gerencia pacientes, médicos, prontuários e a autenticação de usuários.
 
-## Project setup
+## 1. Configuração do Ambiente de Desenvolvimento
 
-```bash
-$ npm install
-```
+Antes de rodar o projeto, você precisa configurar o banco de dados PostgreSQL. A maneira mais fácil é usando Docker.
 
-## Compile and run the project
+### Pré-requisitos
 
-```bash
-# development
-$ npm run start
+- [Node.js](https://nodejs.org/en/) (versão 18 ou superior)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-# watch mode
-$ npm run start:dev
+### Passos para Configuração
 
-# production mode
-$ npm run start:prod
-```
+1.  **Clone o repositório (se ainda não o fez):**
+    ```bash
+    git clone <URL_DO_SEU_REPOSITORIO>
+    cd Saude-Positiva
+    ```
 
-## Run tests
+2.  **Instale as dependências do Node.js:**
+    ```bash
+    npm install
+    ```
 
-```bash
-# unit tests
-$ npm run test
+4.  **Crie o arquivo de variáveis de ambiente (`.env`):**
+    Também na raiz do projeto, crie um arquivo chamado `.env`. A aplicação usará este arquivo para obter as credenciais do banco de dados. Cole o seguinte conteúdo nele:
+    ```
+    DB_HOST=localhost
+    DB_PORT=5432
+    DB_USER=user
+    DB_PASSWORD=password
+    DB_NAME=saude_positiva
+    ```
+    > **Nota:** O arquivo `.env` já está no `.gitignore`, então suas credenciais não serão enviadas para o repositório.
 
-# e2e tests
-$ npm run test:e2e
+## 2. Rodando a Aplicação
 
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Com o ambiente configurado, você pode iniciar a aplicação.
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# Modo de desenvolvimento com watch (reinicia a cada alteração)
+npm run start:dev
+
+# Modo de produção
+npm run start:prod
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+A aplicação estará rodando em http://localhost:3000.
 
-## Resources
+## 3. API e Autenticação (Swagger)
 
-Check out a few resources that may come in handy when working with NestJS:
+A documentação interativa da API está disponível via Swagger. Com a aplicação rodando, acesse:
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- **Link da API:** [http://localhost:3000/api](http://localhost:3000/api)
 
-## Support
+### Como usar a autenticação
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Para acessar endpoints protegidos, você precisa de um token de autenticação. Siga os passos:
 
-## Stay in touch
+1.  **Cadastre um Paciente:**
+    -   Vá para a seção `auth` e abra o endpoint `POST /auth/signup`.
+    -   Clique em **Try it out**, preencha o JSON de exemplo e clique em **Execute**.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+2.  **Faça Login para Obter o Token:**
+    -   Abra o endpoint `POST /auth/login`.
+    -   Clique em **Try it out**, preencha com o `email` e `password` que você acabou de cadastrar e clique em **Execute**.
+    -   Na resposta, copie o valor do `access_token`.
 
-## License
+3.  **Autorize suas Requisições:**
+    -   No topo da página, clique no botão **Authorize**.
+    -   Na janela que abrir, cole o token no campo "Value", adicionando o prefixo `Bearer ` (com um espaço). Deve ficar assim:
+        ```
+        Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        ```
+    -   Clique em **Authorize** e depois em **Close**.
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Pronto! Agora todas as suas requisições feitas pelo Swagger estarão autenticadas.

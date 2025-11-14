@@ -18,14 +18,8 @@ export class CreatePacienteHandler
   async execute(command: CreatePacienteCommand): Promise<Paciente> {
     const { data } = command;
 
-    // 1. Lógica de Negócio: Transformação de Dados
-    // O DTO usa string para data, mas a entidade usa Date.
-    const dataNascimentoDate = new Date(data.DataNascimento);
-
-    // 2. Lógica de Negócio: Criação e Validação de Entidade (implícita no TypeORM)
     const novoPaciente = this.pacienteRepository.create({
-      ...data, // Copia todos os campos
-      DataNascimento: dataNascimentoDate, // Sobrescreve com o tipo Date
+      ...data,
     });
 
     // 3. Lógica de Negócio: Salvar a transação

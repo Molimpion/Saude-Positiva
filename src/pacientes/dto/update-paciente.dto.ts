@@ -1,6 +1,8 @@
-// src/pacientes/dto/update-paciente.dto.ts
-import { PartialType } from '@nestjs/swagger';
+import { OmitType, PartialType } from '@nestjs/swagger';
 import { CreatePacienteDto } from './create-paciente.dto';
 
 // PartialType torna todos os campos de CreatePacienteDto opcionais
-export class UpdatePacienteDto extends PartialType(CreatePacienteDto) {}
+// OmitType remove campos específicos
+export class UpdatePacienteDto extends PartialType(
+  OmitType(CreatePacienteDto, ['password'] as const),
+) {}
