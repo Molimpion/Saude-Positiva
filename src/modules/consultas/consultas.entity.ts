@@ -3,10 +3,30 @@ import { Paciente } from "../pacientes/paciente.entity";
 import { Medico } from "../medicos/medicos.entity";
 import { Prontuario } from "../prontuarios/prontuario.entity";
 
-@Entity()
+@Entity("consultas")
 export class Consulta {
   @PrimaryGeneratedColumn()
   ConsultaID: number;
+
+  @Column()
+  PacienteID: number;
+
+  @Column()
+  MedicoID: number;
+
+  @Column({ nullable: true })
+  ProntuarioID: number;
+
+  @Column({ type: 'date' })
+  Data: Date;
+
+  @Column()
+  Hora: string;
+
+  @Column({ type: 'text', nullable: true })
+  Motivo: string;
+
+  // --- Relacionamentos ---
 
   @ManyToOne(() => Paciente)
   @JoinColumn({ name: "PacienteID" })
@@ -16,22 +36,7 @@ export class Consulta {
   @JoinColumn({ name: "MedicoID" })
   medico: Medico;
 
-  @ManyToOne(() => Prontuario, (prontuario) => prontuario.consultas)
+  @ManyToOne(() => Prontuario)
   @JoinColumn({ name: "ProntuarioID" })
   prontuario: Prontuario;
-
-  @Column() // 
-  PacienteID: number;
-
-  @Column()
-  MedicoID: number; 
-
-  @Column({ type: 'date', nullable: true })
-  Data: Date;
-
-  @Column({ nullable: true })
-  Hora: string;
-
-  @Column({ nullable: true })
-  Motivo: string;
 }

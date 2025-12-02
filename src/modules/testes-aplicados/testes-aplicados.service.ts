@@ -1,29 +1,34 @@
-// testes-aplicados.service.ts
-import { prisma } from "../../shared/prisma";
+import { AppDataSource } from "../../shared/database/data-source";
 import { TesteAplicado } from "./testes-aplicados.entity";
+import { CreateTesteAplicadoDto, UpdateTesteAplicadoDto } from "./testes-aplicados.schema";
+import { AppError } from "../../shared/errors/AppError";
 
 export class TestesAplicadosService {
-  async create(data: Omit<TesteAplicado, "id" | "criadoEm" | "atualizadoEm">) {
-    return prisma.testesAplicados.create({ data });
+  private repo = AppDataSource.getRepository(TesteAplicado);
+
+  async create(data: CreateTesteAplicadoDto) {
+    const teste = this.repo.create(data);
+    return await this.repo.save(teste);
   }
 
   async findAll() {
-    return prisma.testesAplicados.findMany();
+    return await this.repo.find();
   }
 
-  async findById(id: string) {
-    return prisma.testesAplicados.findUnique({ where: { id } });
+  async findOne(id: number) {
+    const teste = await this.repo.findOneBy({ TesteID: id });
+    if (!teste) throw new AppError("Teste aplicado não encontrado", 404);
+    return teste;
   }
 
-  async update(id: string, data: Partial<TesteAplicado>) {
-    return prisma.testesAplicados.update({
-      where: { id },
-      data,
-    });
+  async update(id: number, data: UpdateTesteAplicadoDto) {
+    const teste = await this.findOne(id);
+    this.repo.merge(teste, data);
+    return await this.repo.save(teste);
   }
 
-  async delete(id: string) {
-    return prisma.testesAplicados.delete({ where: { id } });
+  async delete(id: number) {
+    const teste = await this.findOne(id);
+    return await this.repo.remove(teste);
   }
 }
-

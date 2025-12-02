@@ -1,9 +1,26 @@
-// diagnosticos.entity.ts
-export interface Diagnostico {
-  id: string;
-  titulo: string;
-  descricao: string;
-  criadoEm: Date;
-  atualizadoEm: Date;
-}
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Consulta } from "../consultas/consultas.entity";
 
+@Entity("diagnosticos")
+export class Diagnostico {
+  @PrimaryGeneratedColumn()
+  DiagnosticoID: number;
+
+  @Column()
+  ConsultaID: number;
+
+  @Column()
+  Titulo: string;
+
+  @Column({ type: "text" })
+  Descricao: string;
+
+  @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
+  DataCriacao: Date;
+
+  // --- Relacionamentos ---
+
+  @ManyToOne(() => Consulta)
+  @JoinColumn({ name: "ConsultaID" })
+  consulta: Consulta;
+}

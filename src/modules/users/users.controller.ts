@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { DiagnosticosService } from "./diagnosticos.service";
+import { UsersService } from "./users.service";
 
-export class DiagnosticosController {
-  private service = new DiagnosticosService();
+export class UsersController {
+  private service = new UsersService();
 
   create = async (req: Request, res: Response) => {
     const result = await this.service.create(req.body);

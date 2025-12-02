@@ -1,54 +1,49 @@
 import "express-async-errors";
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
-import { ZodError } from "zod";
 
-// Importação das rotas dos módulos
+// --- Importação das Rotas ---
+import authRouter from "../../modules/auth/auth.routes";
 import pacienteRouter from "../../modules/pacientes/paciente.routes";
+import medicoRouter from "../../modules/medicos/medicos.routes";
+import prontuarioRouter from "../../modules/prontuarios/prontuario.routes";
+import consultaRouter from "../../modules/consultas/consultas.routes";
+import diagnosticoRouter from "../../modules/diagnosticos/diagnosticos.routes";
+import testesRouter from "../../modules/testes-aplicados/testes-aplicados.routes";
+import documentosRouter from "../../modules/documentos/documentos.routes";
+import userRouter from "../../modules/users/users.routes";
+
+import { errorMiddleware } from "./middlewares/error.middleware";
 
 const app = express();
 
-// Middlewares Globais
 app.use(cors());
 app.use(express.json());
 
-// --- Rotas da Aplicação ---
-// Aqui você registra os prefixos para cada módulo
-app.use("/pacientes", pacienteRouter);
+// --- Registro das Rotas ---
 
-// Rota Raiz (Health Check)
-app.get("/", (req, res) => {
-  return res.json({ message: "Saúde Positiva API - Online 🚀" });
+// 1. Públicas
+app.use("/auth", authRouter);
+
+// 2. Protegidas (Auth Middleware está dentro de cada arquivo de rota)
+app.use("/pacientes", pacienteRouter);
+app.use("/medicos", medicoRouter);
+app.use("/prontuarios", prontuarioRouter);
+app.use("/consultas", consultaRouter);
+app.use("/diagnosticos", diagnosticoRouter);
+app.use("/testes-aplicados", testesRouter);
+app.use("/documentos", documentosRouter);
+// app.use("/users", userRouter); // (Sua tarefa)
+
+// 3. Health Check
+app.get("/", (req: Request, res: Response) => {
+  return res.json({ 
+    message: "Saúde Positiva API is running!",
+    version: "1.0.0"
+  });
 });
 
-// --- Middleware Global de Tratamento de Erros ---
-// Captura erros do Zod (validação) e erros gerais da aplicação
-app.use(
-  (error: Error, request: Request, response: Response, next: NextFunction) => {
-    // 1. Erro de Validação do Zod
-    if (error instanceof ZodError) {
-      return response.status(400).json({
-        status: "error",
-        message: "Erro de validação nos dados enviados.",
-        errors: error.issues, // Retorna os detalhes do que está errado
-      });
-    }
-
-    // 2. Erros genéricos lançados com 'throw new Error(...)'
-    if (error instanceof Error) {
-      return response.status(400).json({
-        status: "error",
-        message: error.message,
-      });
-    }
-
-    // 3. Erro interno desconhecido
-    console.error(error); // Loga no terminal para o desenvolvedor ver
-    return response.status(500).json({
-      status: "error",
-      message: "Internal Server Error",
-    });
-  }
-);
+// --- Tratamento de Erros Global ---
+app.use(errorMiddleware);
 
 export { app };

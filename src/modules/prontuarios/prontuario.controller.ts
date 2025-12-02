@@ -1,33 +1,34 @@
 import { Request, Response } from "express";
 import { ProntuarioService } from "./prontuario.service";
 
-const service = new ProntuarioService();
-
 export class ProntuarioController {
+    private service = new ProntuarioService();
 
-    async create(req: Request, res: Response) {
-        try {
-            const result = await service.create(req.body);
-            return res.status(201).json(result);
-        } catch (error: any) {
-            return res.status(400).json({ error: error.message });
-        }
+    create = async (req: Request, res: Response) => {
+        const result = await this.service.create(req.body);
+        return res.status(201).json(result);
     }
 
-    async show(req: Request, res: Response) {
+    index = async (req: Request, res: Response) => {
+        const result = await this.service.findAll();
+        return res.json(result);
+    }
+
+    show = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const result = await service.findOne(Number(id));
+        const result = await this.service.findOne(Number(id));
         return res.json(result);
     }
 
-    async update(req: Request, res: Response) {
+    update = async (req: Request, res: Response) => {
         const { id } = req.params;
-        const result = await service.update(Number(id), req.body);
+        const result = await this.service.update(Number(id), req.body);
         return res.json(result);
     }
-
-    async index(req: Request, res: Response) {
-        const result = await service.findAll();
-        return res.json(result);
+    
+    delete = async (req: Request, res: Response) => {
+        const { id } = req.params;
+        await this.service.delete(Number(id));
+        return res.status(204).send();
     }
 }

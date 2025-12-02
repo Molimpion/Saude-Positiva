@@ -1,11 +1,13 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
-// O erro aqui é normal até você salvar este arquivo, pois ele busca o Paciente
 import { Paciente } from '../pacientes/paciente.entity';
 
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  nome: string; // Campo adicionado
 
   @Column({ unique: true })
   email: string;

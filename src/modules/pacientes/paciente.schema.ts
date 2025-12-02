@@ -6,8 +6,6 @@ export const CreatePacienteSchema = z.object({
   CPF: z.string().length(11, 'O CPF deve ter 11 dígitos.'),
   Telefone: z.string().min(1, 'Telefone não pode ser vazio'),
   password: z.string().min(8, 'A senha deve ter no mínimo 8 caracteres.'),
-  
-  // Campos opcionais
   DataNascimento: z.string().pipe(z.coerce.date()).optional(),
   Endereco: z.string().optional(),
   EstadoCivil: z.enum(['Solteiro', 'Casado', 'Divorciado', 'Viúvo']).optional(),

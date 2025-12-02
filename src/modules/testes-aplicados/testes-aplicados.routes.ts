@@ -1,26 +1,18 @@
-// testes-aplicados.routes.ts
 import { Router } from "express";
-import { ensureAuthenticated } from "../../shared/http/middlewares/auth.middleware";
-import { validate } from "../../shared/http/middlewares/validate.middleware";
-
 import { TestesAplicadosController } from "./testes-aplicados.controller";
-import {
-  CreateTesteAplicadoSchema,
-  UpdateTesteAplicadoSchema,
-  ShowOrDeleteTesteAplicadoSchema
-} from "./testes-aplicados.schema";
+import { validate } from "../../shared/http/middlewares/validate.middleware";
+import { ensureAuthenticated } from "../../shared/http/middlewares/auth.middleware";
+import { CreateTesteAplicadoSchema, UpdateTesteAplicadoSchema } from "./testes-aplicados.schema";
 
-const router = Router();
+const testesRouter = Router();
 const controller = new TestesAplicadosController();
 
-// 🔒 TODAS AS ROTAS ABAIXO SÃO PROTEGIDAS
-router.use(ensureAuthenticated);
+testesRouter.use(ensureAuthenticated);
 
-router.post("/", validate(CreateTesteAplicadoSchema), controller.create);
-router.get("/", controller.index);
-router.get("/:id", validate(ShowOrDeleteTesteAplicadoSchema), controller.show);
-router.patch("/:id", validate(UpdateTesteAplicadoSchema), controller.update);
-router.delete("/:id", validate(ShowOrDeleteTesteAplicadoSchema), controller.delete);
+testesRouter.post("/", validate(CreateTesteAplicadoSchema), controller.create);
+testesRouter.get("/", controller.index);
+testesRouter.get("/:id", controller.show);
+testesRouter.patch("/:id", validate(UpdateTesteAplicadoSchema), controller.update);
+testesRouter.delete("/:id", controller.delete);
 
-export default router;
-
+export default testesRouter;
