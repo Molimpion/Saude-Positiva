@@ -4,29 +4,35 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-// Verifica se estamos em produção (O Render define NODE_ENV=production automaticamente)
+// Verifica se estamos em produção
 const isProduction = process.env.NODE_ENV === "production";
+
+// --- LOGS DE DEPURAÇÃO (Para vermos no Render) ---
+console.log("--- [DEBUG] INICIANDO DATA SOURCE ---");
+console.log("1. Estamos em produção?", isProduction);
+console.log("2. DATABASE_URL existe?", !!process.env.DATABASE_URL); // Não mostra a senha, só true/false
+console.log("3. Valor do DB_HOST (se houver):", process.env.DB_HOST); 
+console.log("-------------------------------------");
 
 export const AppDataSource = new DataSource({
   type: "postgres",
   
-  // EM PRODUÇÃO: Usa a URL completa do Neon
+  // Prioriza a URL do Neon em produção
   url: isProduction ? process.env.DATABASE_URL : undefined,
   
-  // EM DESENVOLVIMENTO: Usa as credenciais locais (Docker)
+  // Se não estiver em produção (ou se a URL falhar), tenta o fallback
   host: process.env.DB_HOST || "db",
   port: Number(process.env.DB_PORT) || 5432,
   username: process.env.DB_USER || "admin",
   password: process.env.DB_PASSWORD || "admin",
   database: process.env.DB_NAME || "saude_positiva",
 
-  synchronize: true, // Cria as tabelas automaticamente
+  synchronize: true, 
   logging: !isProduction,
   
-  // OBRIGATÓRIO PARA NEON: SSL ativado em produção
+  // Configuração SSL Obrigatória para Neon
   ssl: isProduction ? { rejectUnauthorized: false } : false,
 
-  // Ajusta o caminho das entidades (dist/js em prod, src/ts em dev)
   entities: [isProduction ? "dist/modules/**/*.entity.js" : "src/modules/**/*.entity.ts"],
   
   migrations: [],
