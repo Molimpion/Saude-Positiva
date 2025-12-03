@@ -1,30 +1,23 @@
-# Dependências
 node_modules/
 
-# Build
 dist/
 
-# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 logs/
 *.log
 
-# Ambiente (Segurança!)
 .env
 .env.test
 .env.production
 
-# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Sistema Operacional
 .DS_Store
 Thumbs.db
 
-# Coverage de testes
 coverage/

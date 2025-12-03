@@ -1,8 +1,9 @@
 import "express-async-errors";
 import express, { Request, Response } from "express";
 import cors from "cors";
+import { apiReference } from "@scalar/express-api-reference";
+import { swaggerSpec } from "../config/swagger";
 
-// --- Importação das Rotas ---
 import authRouter from "../../modules/auth/auth.routes";
 import pacienteRouter from "../../modules/pacientes/paciente.routes";
 import medicoRouter from "../../modules/medicos/medicos.routes";
@@ -20,12 +21,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// --- Registro das Rotas ---
+app.use(
+  "/docs",
+  apiReference({
+    theme: 'purple',
+    spec: {
+      content: swaggerSpec,
+    },
+  })
+);
 
-// 1. Públicas
 app.use("/auth", authRouter);
-
-// 2. Protegidas (Auth Middleware está dentro de cada arquivo de rota)
 app.use("/pacientes", pacienteRouter);
 app.use("/medicos", medicoRouter);
 app.use("/prontuarios", prontuarioRouter);
@@ -33,17 +39,16 @@ app.use("/consultas", consultaRouter);
 app.use("/diagnosticos", diagnosticoRouter);
 app.use("/testes-aplicados", testesRouter);
 app.use("/documentos", documentosRouter);
-// app.use("/users", userRouter); // (Sua tarefa)
+app.use("/users", userRouter);
 
-// 3. Health Check
 app.get("/", (req: Request, res: Response) => {
   return res.json({ 
     message: "Saúde Positiva API is running!",
+    docs: "http://localhost:3000/docs",
     version: "1.0.0"
   });
 });
 
-// --- Tratamento de Erros Global ---
 app.use(errorMiddleware);
 
 export { app };

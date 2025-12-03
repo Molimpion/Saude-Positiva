@@ -9,7 +9,6 @@ export class DiagnosticosService {
   private consultaRepo = AppDataSource.getRepository(Consulta);
 
   async create(data: CreateDiagnosticoDto) {
-    // 1. Validar se a Consulta existe
     const consulta = await this.consultaRepo.findOneBy({ ConsultaID: data.ConsultaID });
     
     if (!consulta) {
@@ -23,7 +22,7 @@ export class DiagnosticosService {
 
   async findAll() {
     return await this.repo.find({
-      relations: ["consulta"], // Traz os dados da consulta junto
+      relations: ["consulta"],
     });
   }
 

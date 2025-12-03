@@ -1,29 +1,41 @@
-// documentos.service.ts
-import { prisma } from "../../shared/prisma";
+import { AppDataSource } from "../../shared/database/data-source";
 import { Documento } from "./documentos.entity";
+import { AppError } from "../../shared/errors/AppError";
 
 export class DocumentosService {
-  async create(data: Omit<Documento, "id" | "criadoEm" | "atualizadoEm">) {
-    return prisma.documento.create({ data });
+  private repo = AppDataSource.getRepository(Documento);
+
+  async create(data: Partial<Documento>) {
+    const documento = this.repo.create(data);
+    return await this.repo.save(documento);
   }
 
   async findAll() {
-    return prisma.documento.findMany();
+    return await this.repo.find();
   }
 
   async findById(id: string) {
-    return prisma.documento.findUnique({ where: { id } });
+    return await this.repo.findOneBy({ id });
   }
 
   async update(id: string, data: Partial<Documento>) {
-    return prisma.documento.update({
-      where: { id },
-      data,
-    });
+    const documento = await this.findById(id);
+    
+    if (!documento) {
+      throw new AppError("Documento não encontrado", 404);
+    }
+
+    this.repo.merge(documento, data);
+    return await this.repo.save(documento);
   }
 
   async delete(id: string) {
-    return prisma.documento.delete({ where: { id } });
+    const documento = await this.findById(id);
+    
+    if (!documento) {
+      throw new AppError("Documento não encontrado", 404);
+    }
+
+    return await this.repo.remove(documento);
   }
 }
-

@@ -18,8 +18,6 @@ export class Diagnostico {
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   DataCriacao: Date;
 
-  // --- Relacionamentos ---
-
   @ManyToOne(() => Consulta)
   @JoinColumn({ name: "ConsultaID" })
   consulta: Consulta;

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { Paciente } from "../pacientes/paciente.entity"; // Ajuste se necessário
+import { Paciente } from "../pacientes/paciente.entity";
 import { Consulta } from "../consultas/consultas.entity";
 
 @Entity("testes_aplicados")
@@ -22,7 +22,6 @@ export class TesteAplicado {
   @Column({ nullable: true })
   ConsultaID: number;
 
-  // --- Relacionamentos ---
   @ManyToOne(() => Consulta)
   @JoinColumn({ name: "ConsultaID" })
   consulta: Consulta;

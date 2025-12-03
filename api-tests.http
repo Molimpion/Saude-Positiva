@@ -1,0 +1,195 @@
+@hostname = http://localhost:3000
+@authToken = {{login.response.body.token}}
+
+# ===================================================================
+# 1. AUTENTICAÇÃO
+# ===================================================================
+
+### 1.1 Registar um Utilizador (Para conseguir logar)
+# @name registerUser
+POST {{hostname}}/auth/register
+Content-Type: application/json
+
+{
+  "nome": "Admin Sistema",
+  "email": "admin@saude.com",
+  "password": "senhaForte123"
+}
+
+### 1.2 Fazer Login (Guarda o token na variável @authToken)
+# @name login
+POST {{hostname}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@saude.com",
+  "password": "senhaForte123"
+}
+
+# ===================================================================
+# 2. PACIENTES
+# ===================================================================
+
+### 2.1 Criar Paciente
+# @name createPaciente
+POST {{hostname}}/pacientes
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "NomeCompleto": "João da Silva",
+  "Email": "joao.silva@email.com",
+  "CPF": "12345678901",
+  "Telefone": "81999998888",
+  "password": "senhaPaciente123",
+  "DataNascimento": "1990-05-15",
+  "EstadoCivil": "Solteiro"
+}
+
+### 2.2 Listar Todos os Pacientes
+GET {{hostname}}/pacientes
+Authorization: Bearer {{authToken}}
+
+### 2.3 Obter Paciente por ID (Usa o ID da criação acima)
+GET {{hostname}}/pacientes/{{createPaciente.response.body.PacienteID}}
+Authorization: Bearer {{authToken}}
+
+### 2.4 Atualizar Paciente
+PATCH {{hostname}}/pacientes/{{createPaciente.response.body.PacienteID}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "Endereco": "Rua das Flores, 123"
+}
+
+# ===================================================================
+# 3. MÉDICOS
+# ===================================================================
+
+### 3.1 Criar Médico
+# @name createMedico
+POST {{hostname}}/medicos
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "NomeCompleto": "Dra. Ana Pereira",
+  "CRM": "PE-12345",
+  "Especialidade": "Cardiologia",
+  "Email": "ana.medica@hospital.com",
+  "Telefone": "81988887777"
+}
+
+### 3.2 Listar Médicos
+GET {{hostname}}/medicos
+Authorization: Bearer {{authToken}}
+
+# ===================================================================
+# 4. PRONTUÁRIOS
+# ===================================================================
+
+### 4.1 Criar Prontuário
+# @name createProntuario
+POST {{hostname}}/prontuarios
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "PacienteID": {{createPaciente.response.body.PacienteID}},
+  "MedicoResponsavelID": {{createMedico.response.body.MedicoID}},
+  "QueixaPrincipal": "Dores no peito frequentes",
+  "HistoricoMedico": "Histórico de hipertensão na família"
+}
+
+# ===================================================================
+# 5. CONSULTAS
+# ===================================================================
+
+### 5.1 Agendar Consulta
+# @name createConsulta
+POST {{hostname}}/consultas
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "PacienteID": {{createPaciente.response.body.PacienteID}},
+  "MedicoID": {{createMedico.response.body.MedicoID}},
+  "ProntuarioID": {{createProntuario.response.body.ProntuarioID}},
+  "Data": "2023-12-20",
+  "Hora": "14:30",
+  "Motivo": "Check-up de rotina"
+}
+
+### 5.2 Listar Consultas
+GET {{hostname}}/consultas
+Authorization: Bearer {{authToken}}
+
+# ===================================================================
+# 6. TESTES APLICADOS
+# ===================================================================
+
+### 6.1 Registar Teste
+# @name createTeste
+POST {{hostname}}/testes-aplicados
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "ConsultaID": {{createConsulta.response.body.ConsultaID}},
+  "Nome": "Eletrocardiograma",
+  "Descricao": "Teste de esforço",
+  "Resultado": "Normal"
+}
+
+# ===================================================================
+# 7. DIAGNÓSTICOS
+# ===================================================================
+
+### 7.1 Criar Diagnóstico
+# @name createDiagnostico
+POST {{hostname}}/diagnosticos
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "ConsultaID": {{createConsulta.response.body.ConsultaID}},
+  "Titulo": "Hipertensão Leve",
+  "Descricao": "Paciente apresenta quadro leve de pressão alta. Recomendada dieta."
+}
+
+# ===================================================================
+# 8. NOVO ENDPOINT: HISTÓRICO COMPLETO
+# ===================================================================
+
+### 8.1 Puxar Histórico do Paciente (Consultas + Testes)
+GET {{hostname}}/pacientes/{{createPaciente.response.body.PacienteID}}/historico
+Authorization: Bearer {{authToken}}
+
+# ===================================================================
+# 9. DOCUMENTOS
+# ===================================================================
+
+### 9.1 Criar Documento
+# @name createDoc
+POST {{hostname}}/documentos
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+  "titulo": "Exame de Sangue",
+  "tipo": "PDF",
+  "caminhoArquivo": "https://storage.com/exames/sangue_123.pdf"
+}
+
+### 9.2 Deletar Documento
+DELETE {{hostname}}/documentos/{{createDoc.response.body.id}}
+Authorization: Bearer {{authToken}}
+
+# ===================================================================
+# 10. USUÁRIOS (Gestão)
+# ===================================================================
+
+### 10.1 Listar Usuários
+GET {{hostname}}/users
+Authorization: Bearer {{authToken}}

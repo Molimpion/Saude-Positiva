@@ -9,7 +9,7 @@ export class PacienteController {
         try {
             const result = await service.create(req.body);
             return res.status(201).json(result);
-        } catch (error) {
+        } catch (error: any) {
             return res.status(400).json({ error: error.message });
         }
     }
@@ -28,6 +28,12 @@ export class PacienteController {
 
     async index(req: Request, res: Response) {
         const result = await service.findAll();
+        return res.json(result);
+    }
+
+    async getHistory(req: Request, res: Response) {
+        const { id } = req.params;
+        const result = await service.findHistory(Number(id));
         return res.json(result);
     }
 }

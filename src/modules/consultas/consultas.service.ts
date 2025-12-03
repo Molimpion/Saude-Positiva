@@ -11,19 +11,16 @@ export class ConsultaService {
     private pacienteRepo = AppDataSource.getRepository(Paciente);
 
     async create(data: CreateConsultaDto) {
-        // 1. Validar se Médico existe
         const medico = await this.medicoRepo.findOneBy({ MedicoID: data.MedicoID });
         if (!medico) {
             throw new AppError("Médico não encontrado.", 404);
         }
 
-        // 2. Validar se Paciente existe
         const paciente = await this.pacienteRepo.findOneBy({ PacienteID: data.PacienteID });
         if (!paciente) {
             throw new AppError("Paciente não encontrado.", 404);
         }
 
-        // 3. Criar consulta
         const consulta = this.repo.create(data);
         return await this.repo.save(consulta);
     }

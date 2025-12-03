@@ -26,8 +26,6 @@ export class Consulta {
   @Column({ type: 'text', nullable: true })
   Motivo: string;
 
-  // --- Relacionamentos ---
-
   @ManyToOne(() => Paciente)
   @JoinColumn({ name: "PacienteID" })
   paciente: Paciente;

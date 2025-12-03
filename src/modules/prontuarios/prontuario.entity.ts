@@ -30,8 +30,6 @@ export class Prontuario {
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   DataAbertura: Date;
 
-  // --- Relacionamentos ---
-
   @ManyToOne(() => Paciente, (paciente) => paciente.prontuarios)
   @JoinColumn({ name: 'PacienteID' })
   paciente: Paciente;

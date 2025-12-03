@@ -19,14 +19,12 @@ export function ensureAuthenticated(
     throw new AppError("Token JWT não informado.", 401);
   }
 
-  // O cabeçalho vem como "Bearer <token>", então separamos
   const [, token] = authHeader.split(" ");
 
   try {
     const decoded = verify(token, process.env.JWT_SECRET || "default_secret");
     const { sub } = decoded as TokenPayload;
 
-    // Injeta o ID do usuário na requisição para ser usado nos controllers
     // @ts-ignore (Ignora erro de tipagem do Express se não houver @types customizado)
     req.user = {
       id: sub,

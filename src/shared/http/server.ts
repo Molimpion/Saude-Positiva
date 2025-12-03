@@ -2,7 +2,6 @@ import "reflect-metadata";
 import { AppDataSource } from "../database/data-source";
 import { app } from "./app";
 
-// Inicializa o Banco primeiro, depois sobe a API
 AppDataSource.initialize()
   .then(() => {
     console.log("Banco de Dados conectado com sucesso!");

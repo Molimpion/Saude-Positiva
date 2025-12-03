@@ -11,13 +11,11 @@ export class ProntuarioService {
     private medicoRepo = AppDataSource.getRepository(Medico);
 
     async create(data: CreateProntuarioDto) {
-        // 1. Validar Paciente
         const paciente = await this.pacienteRepo.findOneBy({ PacienteID: data.PacienteID });
         if (!paciente) {
             throw new AppError("Paciente não encontrado.", 404);
         }
 
-        // 2. Validar Médico (se informado)
         if (data.MedicoResponsavelID) {
             const medico = await this.medicoRepo.findOneBy({ MedicoID: data.MedicoResponsavelID });
             if (!medico) {

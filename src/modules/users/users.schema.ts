@@ -12,7 +12,7 @@ export const UpdateUserSchema = z.object({
   body: z.object({
     nome: z.string().min(3).optional(),
     email: z.string().email().optional(),
-    password: z.string().min(6).optional(), // Senha é opcional na edição
+    password: z.string().min(6).optional(),
   }),
   params: z.object({
     id: z.string().regex(/^\d+$/, "ID inválido"),

@@ -7,7 +7,7 @@ export class User {
   id: number;
 
   @Column()
-  nome: string; // Campo adicionado
+  nome: string;
 
   @Column({ unique: true })
   email: string;
