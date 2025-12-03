@@ -26,7 +26,9 @@
 Este repositório contém o código-fonte do backend da plataforma **Saúde Positiva**.
 Trata-se de uma **API RESTful** robusta e modular, projetada para a gestão de clínicas e consultórios, abrangendo pacientes, médicos, prontuários, consultas, diagnósticos e testes aplicados.
 
-**Documentação da API (Scalar):** [http://localhost:3000/docs](http://localhost:3000/docs) (local)
+**API ao vivo:** [https://saude-positiva.onrender.com](https://saude-positiva.onrender.com)
+
+**Documentação da API:** [https://saude-positiva.onrender.com/docs](https://saude-positiva.onrender.com/docs)
 
 ## 2. Estado do Projeto
 
