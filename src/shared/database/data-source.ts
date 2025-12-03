@@ -4,30 +4,29 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-// Verifica se estamos em ambiente de produção
+// Verifica se estamos em produção (O Render define NODE_ENV=production automaticamente)
 const isProduction = process.env.NODE_ENV === "production";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
   
-  // Em produção (Render), usa a URL completa. Localmente, usa as credenciais individuais.
-  url: process.env.DATABASE_URL, 
+  // EM PRODUÇÃO: Usa a URL completa do Neon
+  url: isProduction ? process.env.DATABASE_URL : undefined,
   
+  // EM DESENVOLVIMENTO: Usa as credenciais locais (Docker)
   host: process.env.DB_HOST || "db",
   port: Number(process.env.DB_PORT) || 5432,
   username: process.env.DB_USER || "admin",
   password: process.env.DB_PASSWORD || "admin",
   database: process.env.DB_NAME || "saude_positiva",
 
-  // Cuidado com synchronize: true em produção real (apaga dados se mudar schemas), 
-  // mas é útil para este MVP/Residência.
-  synchronize: true, 
+  synchronize: true, // Cria as tabelas automaticamente
   logging: !isProduction,
   
-  // O Neon exige conexão segura (SSL)
+  // OBRIGATÓRIO PARA NEON: SSL ativado em produção
   ssl: isProduction ? { rejectUnauthorized: false } : false,
 
-  // Em produção roda os .js da pasta dist. Em dev roda os .ts da pasta src.
+  // Ajusta o caminho das entidades (dist/js em prod, src/ts em dev)
   entities: [isProduction ? "dist/modules/**/*.entity.js" : "src/modules/**/*.entity.ts"],
   
   migrations: [],
